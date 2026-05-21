@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goal Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Goal Tracker</h1>
+        <p class="subtitle">Постановка личных целей, отслеживание прогресса и визуализация достижений</p>
+
+        <div class="stats">
+            <div class="card">Всего целей: <strong>{{ total_goals }}</strong></div>
+            <div class="card">Активные: <strong>{{ active_goals }}</strong></div>
+            <div class="card">Завершенные: <strong>{{ completed_goals }}</strong></div>
+            <div class="card">Просроченные: <strong>{{ overdue_goals }}</strong></div>
+            <div class="card">Средний прогресс: <strong>{{ average_progress }}%</strong></div>
+        </div>
+
+        {% if errors %}
+            <div class="error-box">
+                <ul>
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <div class="form-block">
+            <h2>Добавить цель</h2>
+            <form action="/add" method="POST">
+                <input type="text" name="title" placeholder="Название цели" required>
+                <input type="date" name="deadline" required>
+                <input type="number" name="progress" placeholder="Прогресс (%)" min="0" max="100" required>
+                <input type="text" name="reminder" placeholder="Напоминание" required>
+                <button type="submit">Добавить</button>
+            </form>
+        </div>
+
+        <div class="filter-block">
+            <h2>Фильтр по статусу</h2>
+            <form method="GET" action="/">
+                <select name="status">
+                    <option value="All" {% if status_filter == 'All' %}selected{% endif %}>Все</option>
+                    <option value="Active" {% if status_filter == 'Active' %}selected{% endif %}>Active</option>
+                    <option value="Completed" {% if status_filter == 'Completed' %}selected{% endif %}>Completed</option>
+                    <option value="Overdue" {% if status_filter == 'Overdue' %}selected{% endif %}>Overdue</option>
+                </select>
+                <button type="submit">Применить</button>
+            </form>
+        </div>
+
+        <div class="goals-list">
+            <h2>Список целей</h2>
+            {% if goals %}
+                {% for goal in goals %}
+                    <div class="goal-card">
+                        <h3>{{ goal.title }}</h3>
+                        <p><strong>Дедлайн:</strong> {{ goal.deadline }}</p>
+                        <p><strong>Прогресс:</strong> {{ goal.progress }}%</p>
+                        <p><strong>Напоминание:</strong> {{ goal.reminder }}</p>
+                        <p><strong>Статус:</strong> {{ goal.status }}</p>
+                        <div class="actions">
+                            <a href="/edit/{{ goal.id }}">Редактировать</a>
+                            <a href="/delete/{{ goal.id }}" class="delete">Удалить</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Нет целей по выбранному фильтру.</p>
+            {% endif %}
+        </div>
+
+        <div class="chart-block">
+            <h2>График выполнения</h2>
+            <canvas id="progressChart"></canvas>
+        </div>
+    </div>
+
+<script>
+    const chartLabels = JSON.parse('{{ chart_labels | tojson | safe }}');
+    const chartValues = JSON.parse('{{ chart_values | tojson | safe }}');
+
+    const ctx = document.getElementById('progressChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'Прогресс выполнения (%)',
+                data: chartValues,
+                backgroundColor: '#2d89ef'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

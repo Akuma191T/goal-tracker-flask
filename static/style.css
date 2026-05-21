@@ -1,0 +1,126 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #222;
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+.subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: #eaf2ff;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.form-block,
+.filter-block,
+.chart-block,
+.goals-list {
+    margin-bottom: 30px;
+}
+
+.form-block form,
+.filter-block form {
+    display: grid;
+    gap: 12px;
+}
+
+input, select, button {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+input, select {
+    border: 1px solid #ccc;
+}
+
+button {
+    border: none;
+    background: #2d89ef;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1b6fd1;
+}
+
+.goal-card {
+    background: #f9fbfd;
+    border: 1px solid #dce6f2;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.actions {
+    margin-top: 10px;
+}
+
+.actions a {
+    text-decoration: none;
+    margin-right: 15px;
+    color: #2d89ef;
+    font-weight: bold;
+}
+
+.actions .delete {
+    color: #d93025;
+}
+
+.back-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-link a {
+    text-decoration: none;
+    color: #2d89ef;
+    font-weight: bold;
+}
+
+.error-box {
+    background: #ffe5e5;
+    color: #a10000;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.error-box ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+canvas {
+    max-width: 100%;
+}
